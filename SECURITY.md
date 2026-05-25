@@ -40,7 +40,7 @@ Because the contracts cannot be patched, "responsible disclosure" looks differen
 These are not vulnerabilities — they are intentional design choices:
 
 - **`triggerBurn()` is permissionless.** Anyone can burn ANI from the vault on schedule, including front-runners. This is intended; the schedule, not the caller, determines the amount.
-- **The deployer wallet's 1M ANI is not vested or timelocked.** It is documented in the README's supply table and any movement is publicly visible on Basescan.
+- **The 700,000 ANI on the deployer wallet (`0xDc1D..6412`) and the 300,000 ANI on the personal wallet (`0x4124..AF28`) are not vested or timelocked.** Both balances are documented in the README's supply table and any movement is publicly visible on Basescan.
 - **Launch protection (90-day buy limits) is one-way.** Once it expires (or is bypassed for exempt wallets), it cannot be re-enabled.
 - **OpenZeppelin is imported via GitHub URL tag.** The contract source on Basescan is the authoritative source; the live URL is a developer convenience.
 

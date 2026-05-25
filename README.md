@@ -52,10 +52,19 @@
 | --- | --- |
 | ANI token | [`0xE378841a3970FD43ac8aD4D1D77b068C87287e5f`](https://basescan.org/token/0xE378841a3970FD43ac8aD4D1D77b068C87287e5f) |
 | Burn vault | [`0xAF727167448374f73AE22e3d026D11965EDf416B`](https://basescan.org/address/0xAF727167448374f73AE22e3d026D11965EDf416B) |
-| Liquidity pool | [`0x2F947691C97244D845B2db2f86489D21c4c919bD`](https://basescan.org/address/0x2F947691C97244D845B2db2f86489D21c4c919bD) |
-| Owner wallet (limit-exempt) | [`0x412462Ff8E3A3cB96B0b2255114Bd85cC900AF28`](https://basescan.org/address/0x412462Ff8E3A3cB96B0b2255114Bd85cC900AF28) |
+| Aerodrome liquidity pool | [`0x2F947691C97244D845B2db2f86489D21c4c919bD`](https://basescan.org/address/0x2F947691C97244D845B2db2f86489D21c4c919bD) |
+| Deployer / LP incentives wallet | [`0xDc1Dbe909Eb6E9bd054e123747ca77A036F16412`](https://basescan.org/address/0xDc1Dbe909Eb6E9bd054e123747ca77A036F16412) |
+| Personal / limit-exempt wallet (registered as `ownerWallet`) | [`0x412462Ff8E3A3cB96B0b2255114Bd85cC900AF28`](https://basescan.org/address/0x412462Ff8E3A3cB96B0b2255114Bd85cC900AF28) |
 
 Contracts are verified on Basescan — source code matches this repository exactly.
+
+**Key dates (from on-chain state):**
+
+| Event | UTC | Unix |
+| --- | --- | --- |
+| Vault `startTime` (burn schedule clock) | 2026-05-24 18:41:59 | `1779648119` |
+| `liquidityCreatedAt` (launch protection clock) | 2026-05-24 22:30:01 | `1779661801` |
+| `protectionEndsAt` (limits permanently disabled) | 2026-08-22 22:30:01 | `1787437801` |
 
 ---
 
@@ -63,13 +72,14 @@ Contracts are verified on Basescan — source code matches this repository exact
 
 ```mermaid
 flowchart TD
-    Deployer[Deployer wallet<br/>0x4124..AF28] -->|"deploys + mints 100M"| Token((Anisian Token<br/>0xE378..7e5f<br/><b>ERC-20 immutable</b>))
+    Deployer[Deployer wallet<br/>0xDc1D..6412] -->|"deploys + mints 100M"| Token((Anisian Token<br/>0xE378..7e5f<br/><b>ERC-20 immutable</b>))
     Deployer -->|"deploys"| Vault((Burn Vault<br/>0xAF72..416B<br/><b>no admin</b>))
     Deployer -->|"creates LP"| Pool((Aerodrome Pool<br/>0x2F94..919bD))
 
     Token -. "79M transferred at init" .-> Vault
-    Token -. "initial liquidity" .-> Pool
-    Token -. "LP incentives / project" .-> Owner[Owner wallet<br/>1M ANI]
+    Token -. "20M initial liquidity" .-> Pool
+    Token -. "700K to be distributed<br/>as LP incentives" .-> Deployer
+    Token -. "300K personal" .-> Personal[Personal wallet<br/>0x4124..AF28<br/><i>limit-exempt</i>]
 
     Vault ==>|"triggerBurn() permissionless<br/>halving schedule, 730d epochs"| Burned((🔥 Burned forever))
 
@@ -80,7 +90,7 @@ flowchart TD
     classDef wallet fill:#2a2a2a,stroke:#888,color:#fff
     class Token,Vault immutable
     class Burned burn
-    class Deployer,Owner,Public wallet
+    class Deployer,Personal,Public wallet
 ```
 
 See [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md) for a complete description of the system and trust model.
@@ -92,11 +102,14 @@ See [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md) for a complete description 
 | Allocation | Amount | Held by |
 | --- | --- | --- |
 | Burn vault (halving schedule, ~14 years) | 79,000,000 ANI | [`0xAF72..416B`](https://basescan.org/address/0xAF727167448374f73AE22e3d026D11965EDf416B) |
-| Initial liquidity (Aerodrome pool) | held in LP | [`0x2F94..919bD`](https://basescan.org/address/0x2F947691C97244D845B2db2f86489D21c4c919bD) |
-| LP incentives (Aerodrome liquidity providers) | 700,000 ANI | [`0x4124..AF28`](https://basescan.org/address/0x412462Ff8E3A3cB96B0b2255114Bd85cC900AF28) |
-| Deployer / project | 300,000 ANI | [`0x4124..AF28`](https://basescan.org/address/0x412462Ff8E3A3cB96B0b2255114Bd85cC900AF28) |
+| Initial liquidity (Aerodrome ANI/WETH pool) | 20,000,000 ANI | [`0x2F94..919bD`](https://basescan.org/address/0x2F947691C97244D845B2db2f86489D21c4c919bD) |
+| LP incentives (deployer wallet, to be distributed) | 700,000 ANI | [`0xDc1D..6412`](https://basescan.org/address/0xDc1Dbe909Eb6E9bd054e123747ca77A036F16412) |
+| Personal (limit-exempt wallet) | 300,000 ANI | [`0x4124..AF28`](https://basescan.org/address/0x412462Ff8E3A3cB96B0b2255114Bd85cC900AF28) |
+| **Total** | **100,000,000 ANI** | (matches `INITIAL_SUPPLY`) |
 
-The 700,000 ANI on the deployer wallet are earmarked to be distributed to **Aerodrome liquidity providers** as a one-time incentive for bootstrapping liquidity. Once distributed, the deployer wallet retains only the 300,000 ANI personal allocation. All balances are publicly verifiable on Basescan.
+The **700,000 ANI** sitting on the deployer wallet `0xDc1D..6412` are earmarked to be distributed to **Aerodrome liquidity providers** as a one-time bootstrapping incentive (mechanism: gauge bribes, merkle airdrop, or direct distribution — to be decided). After distribution, the deployer wallet's balance goes to zero.
+
+The **300,000 ANI** on the personal wallet `0x4124..AF28` are the founder's allocation. This wallet was registered as `ownerWallet` in `initialize()` and is therefore `isLimitExempt = true` on-chain — the 90-day launch protection limits do not apply to it. All balances are publicly verifiable on Basescan, and the totals above can be cross-checked against `scripts/check-burn-progress.sh` and any block explorer.
 
 See [`docs/BURN_SCHEDULE.md`](./docs/BURN_SCHEDULE.md) for the full per-epoch burn allocation table.
 

@@ -78,7 +78,7 @@ During the first 90 days after `initialize()`, three limits apply **only to buys
 - Max **20,000 ANI** balance per wallet after a buy (`MaxWalletExceeded`)
 - **10-minute cooldown** between buys per wallet (`CooldownActive`)
 
-These limits **do not apply** to wallet-to-wallet transfers, sells, or the exempt wallets (vault and deployer's project wallet). After 90 days they permanently disable.
+These limits **do not apply** to wallet-to-wallet transfers, sells, or the exempt wallets (the burn vault `0xAF72..416B` and the personal wallet `0x4124..AF28` that was registered as `ownerWallet` in `initialize()`). After 90 days the limits permanently disable for everyone.
 
 ### Can I add ANI to MetaMask / Rabby / Coinbase Wallet / Trust Wallet?
 

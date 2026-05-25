@@ -4,6 +4,43 @@ All notable changes to this repository are documented here. The on-chain contrac
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) for the repository structure (not the contracts, which have no version after deployment).
 
+## [1.2.0] – 2026-05-25
+
+### Changed
+
+- **Supply distribution table corrected to match on-chain reality**, verified by direct RPC introspection of the deployed token:
+  - The 700,000 ANI for LP incentives is held on the deployer wallet `0xDc1Dbe909Eb6E9bd054e123747ca77A036F16412` (previously the README mistakenly listed both 700K and 300K on the same address).
+  - The 300,000 ANI personal allocation is held on `0x412462Ff8E3A3cB96B0b2255114Bd85cC900AF28`, which was registered as `ownerWallet` in `initialize()` and is therefore `isLimitExempt = true`.
+  - The Aerodrome pool holds 20,000,000 ANI as initial liquidity (the exact amount, previously displayed only as "held in LP").
+- README on-chain addresses table now lists the deployer wallet explicitly and renames the previous "Owner wallet" row to "Personal / limit-exempt wallet" to disambiguate.
+- README now includes the exact on-chain key timestamps: vault `startTime`, `liquidityCreatedAt`, and `protectionEndsAt`.
+- `deploy-addresses.txt` extended with the deployer wallet, key timestamps, and inline comments documenting each address's role and balance.
+- `docs/ARCHITECTURE.md` and `docs/FAQ.md` clarified to reflect the correct deployer/exempt wallet roles.
+- `SECURITY.md` clarified to list the two separate non-vested wallets.
+- `CHANGELOG.md` on-chain history section filled in with exact timestamps read from the deployed contracts.
+- README architecture diagram updated to show the deployer wallet and the personal wallet as distinct nodes.
+
+### Verified directly on-chain
+
+All claims in the supply distribution table and addresses section were cross-checked against block timestamp `1779705209` on Base mainnet via the public RPC. Specifically:
+
+```
+totalSupply():                       99,973,348.5540 ANI
+balanceOf(vault)                     78,973,348.5540 ANI
+balanceOf(Aerodrome pool)            20,000,000.0000 ANI
+balanceOf(0xDc1D..6412 deployer)        700,000.0000 ANI
+balanceOf(0x4124..AF28 personal)        300,000.0000 ANI
+                                     ---------------
+sum                                  99,973,348.5540 ANI  (matches totalSupply ✓)
+
+isLimitExempt(0x4124..AF28)          true
+isLimitExempt(0xDc1D..6412)          false
+isLimitExempt(vault)                 true
+isLiquidityPool(Aerodrome pool)      true
+vault.isFunded()                     true
+vault.totalBurned()                  26,651.4460 ANI
+```
+
 ## [1.1.0] – 2026-05-25
 
 ### Added
@@ -55,13 +92,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## On-chain history (informational)
 
-These are the underlying chain events, not repository commits:
+These are the underlying chain events, not repository commits. Timestamps are read directly from the on-chain state of the deployed contracts.
 
-- **2026-05-XX** — `Anisian.sol` deployed to `0xE378841a3970FD43ac8aD4D1D77b068C87287e5f` on Base mainnet. 100,000,000 ANI minted to deployer in the constructor.
-- **2026-05-XX** — `AnisianBurnVault.sol` deployed to `0xAF727167448374f73AE22e3d026D11965EDf416B`. `startTime` anchored to deployment timestamp.
-- **2026-05-XX** — Aerodrome liquidity pool created at `0x2F947691C97244D845B2db2f86489D21c4c919bD`.
-- **2026-05-XX** — `Anisian.initialize(vault, pool, ownerWallet)` called. Burn vault and pool registered. 90-day launch protection window started.
-- **2026-05-XX** — 79,000,000 ANI transferred from deployer to burn vault, funding the schedule.
-- **2026-05-XX** — Contracts verified on Basescan.
+- **2026-05-24 18:41:59 UTC** (unix `1779648119`) — `AnisianBurnVault.sol` deployed to `0xAF727167448374f73AE22e3d026D11965EDf416B`. `startTime` anchored here; burn schedule clock begins.
+- **2026-05-24 (slightly later)** — `Anisian.sol` deployed to `0xE378841a3970FD43ac8aD4D1D77b068C87287e5f`. 100,000,000 ANI minted to deployer `0xDc1Dbe909Eb6E9bd054e123747ca77A036F16412` in the constructor.
+- **2026-05-24** — Aerodrome liquidity pool created at `0x2F947691C97244D845B2db2f86489D21c4c919bD`; 20,000,000 ANI seeded as initial liquidity.
+- **2026-05-24 22:30:01 UTC** (unix `1779661801`) — `Anisian.initialize(vault, pool, ownerWallet)` called by deployer with `ownerWallet = 0x412462Ff8E3A3cB96B0b2255114Bd85cC900AF28`. Burn vault and Aerodrome pool registered; vault and ownerWallet marked `isLimitExempt`. 90-day launch protection window started.
+- **2026-05-24** — 79,000,000 ANI transferred from deployer to burn vault, funding the schedule. `isFunded()` returns true.
+- **2026-05-24** — 300,000 ANI transferred from deployer (`0xDc1D..6412`) to personal wallet (`0x4124..AF28`). Deployer wallet retains 700,000 ANI earmarked for LP incentives.
+- **2026-05-24** — Contracts verified on Basescan (source matches this repository byte-for-byte).
+- **2026-05-2X** — First community `triggerBurn()` call(s) executed; 26,651.45 ANI burned from vault (verifiable: vault `totalBurned()` view).
+- **2026-08-22 22:30:01 UTC** (unix `1787437801`) — *(future)* launch protection limits permanently disable on the next transfer.
 
-> Exact block numbers and timestamps are available on Basescan via the addresses linked in [`README.md`](./README.md).
+> Exact block numbers and per-transaction details are available on Basescan via the addresses linked in [`README.md`](./README.md). Live state can be queried any time via `scripts/check-burn-progress.sh`.

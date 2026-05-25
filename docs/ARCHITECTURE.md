@@ -83,7 +83,7 @@ A standard Aerodrome v2 pool (`vAMM-ANI/WETH` or similar). Not custom code. The 
 
 ## What can the deployer still do?
 
-After `initialize()` is called, the deployer wallet (`0x412462Ff8E3A3cB96B0b2255114Bd85cC900AF28`) has **exactly the same powers as any other holder**:
+After `initialize()` is called, the deployer wallet (`0xDc1Dbe909Eb6E9bd054e123747ca77A036F16412`) has **exactly the same powers as any other holder**:
 
 - Send their own ANI to other wallets ✓ (normal ERC-20)
 - Receive ANI ✓

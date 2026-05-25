@@ -12,9 +12,9 @@
 [![Verified on Basescan](https://img.shields.io/badge/Verified-Basescan-2E78A7)](https://basescan.org/token/0xE378841a3970FD43ac8aD4D1D77b068C87287e5f#code)
 [![Immutable](https://img.shields.io/badge/Contracts-Immutable-success)](#project-status-community-owned-no-maintainer)
 [![No Admin](https://img.shields.io/badge/Admin-None-critical)](#project-status-community-owned-no-maintainer)
-[![Trading on Aerodrome](https://img.shields.io/badge/Trading-Aerodrome-1F89F1)](https://aerodrome.finance/swap?from=eth&to=0xE378841a3970FD43ac8aD4D1D77b068C87287e5f)
+[![Trading on Aerodrome](https://img.shields.io/badge/Trading-Aerodrome-1F89F1)](https://aerodrome.finance/swap?from=0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913&to=0xE378841a3970FD43ac8aD4D1D77b068C87287e5f)
 
-[**Buy on Aerodrome**](https://aerodrome.finance/swap?from=eth&to=0xE378841a3970FD43ac8aD4D1D77b068C87287e5f) · [**View on Basescan**](https://basescan.org/token/0xE378841a3970FD43ac8aD4D1D77b068C87287e5f) · [**Token List**](./tokenlist.json) · [**FAQ**](./docs/FAQ.md)
+[**Buy on Aerodrome**](https://aerodrome.finance/swap?from=0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913&to=0xE378841a3970FD43ac8aD4D1D77b068C87287e5f) · [**View on Basescan**](https://basescan.org/token/0xE378841a3970FD43ac8aD4D1D77b068C87287e5f) · [**Token List**](./tokenlist.json) · [**FAQ**](./docs/FAQ.md) · [**Project status**](./STATUS.md)
 
 </div>
 
@@ -43,6 +43,8 @@
 - **No admin, no mint, no pause, no upgrade proxy.** Once deployed, nobody — not even the deployer — can change the rules.
 
 > Wallets are recommended to fetch token information from this repository or the official explorer pages linked below.
+
+> **⚠️ Read [`STATUS.md`](./STATUS.md) before trading or integrating.** The pool currently holds a very small amount of USDC-side liquidity; the project is **community-owned with no committed maintainer**. [`STATUS.md`](./STATUS.md) is the honest source of truth for the project's current on-chain state, what listings are done, what is blocked, and how someone can help (with time, capital, or stewardship).
 
 ---
 
@@ -102,7 +104,7 @@ See [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md) for a complete description 
 | Allocation | Amount | Held by |
 | --- | --- | --- |
 | Burn vault (halving schedule, ~14 years) | 79,000,000 ANI | [`0xAF72..416B`](https://basescan.org/address/0xAF727167448374f73AE22e3d026D11965EDf416B) |
-| Initial liquidity (Aerodrome ANI/WETH pool) | 20,000,000 ANI | [`0x2F94..919bD`](https://basescan.org/address/0x2F947691C97244D845B2db2f86489D21c4c919bD) |
+| Initial liquidity (Aerodrome ANI/USDC pool) | 20,000,000 ANI | [`0x2F94..919bD`](https://basescan.org/address/0x2F947691C97244D845B2db2f86489D21c4c919bD) |
 | LP incentives (deployer wallet, to be distributed) | 700,000 ANI | [`0xDc1D..6412`](https://basescan.org/address/0xDc1Dbe909Eb6E9bd054e123747ca77A036F16412) |
 | Personal (limit-exempt wallet) | 300,000 ANI | [`0x4124..AF28`](https://basescan.org/address/0x412462Ff8E3A3cB96B0b2255114Bd85cC900AF28) |
 | **Total** | **100,000,000 ANI** | (matches `INITIAL_SUPPLY`) |
@@ -164,7 +166,8 @@ https://raw.githubusercontent.com/anisiananifree/anisian_contracts/main/tokenlis
 │   └── token-metadata.json      # ERC-20 metadata (also pinned on IPFS)
 ├── scripts/
 │   ├── README.md
-│   └── check-burn-progress.sh   # Query current burn vault state via Base RPC
+│   ├── check-burn-progress.sh   # Query current burn vault state via Base RPC
+│   └── get-live-state.py        # Print full on-chain snapshot (balances, pool reserves, prices)
 ├── .github/
 │   ├── ISSUE_TEMPLATE/
 │   ├── PULL_REQUEST_TEMPLATE.md
@@ -178,6 +181,7 @@ https://raw.githubusercontent.com/anisiananifree/anisian_contracts/main/tokenlis
 ├── CHANGELOG.md
 ├── CONTRIBUTING.md
 ├── SECURITY.md
+├── STATUS.md                    # Live on-chain snapshot + listings + call for stewardship
 ├── LICENSE                      # MIT
 └── README.md
 ```
@@ -238,6 +242,7 @@ To check the current burn progress from your terminal:
 
 ## Documentation
 
+- [`STATUS.md`](./STATUS.md) — **honest, live on-chain state** of the project (TVL, listings, blockers, call for stewardship).
 - [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md) — system architecture, components, and trust model.
 - [`docs/BURN_SCHEDULE.md`](./docs/BURN_SCHEDULE.md) — per-epoch burn schedule and math.
 - [`docs/FAQ.md`](./docs/FAQ.md) — common questions about ANI.

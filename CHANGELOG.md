@@ -4,6 +4,43 @@ All notable changes to this repository are documented here. The on-chain contrac
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) for the repository structure (not the contracts, which have no version after deployment).
 
+## [1.3.0] – 2026-05-25
+
+### Added
+
+- **`STATUS.md`** — a point-in-time, honest snapshot of the project's actual on-chain state, including pool TVL, implied ANI price, market cap, and the precise status of every known listing / integration channel. Includes an explicit "Call for stewardship" section inviting community members to take over the off-chain side of the project.
+- **`scripts/get-live-state.py`** — a stdlib-only Python script that prints the full on-chain snapshot (block, balances, pool reserves, burn vault progress, launch-protection flag) used to regenerate the numbers in `STATUS.md`. Includes a sanity check that `sum(known holders) == totalSupply()`.
+- `STATUS.md` is referenced from `README.md` (overview callout, quick-links bar, repository layout, documentation list) and from `docs/FAQ.md` (in the "Where can I buy ANI?" answer).
+
+### Fixed
+
+- **Pool pair correction**: the liquidity pool is **ANI/USDC** (paired with native USDC `0x8335…2913` on Base), not ANI/WETH. References in `README.md` and `docs/ARCHITECTURE.md` updated. The `ARCHITECTURE.md` reference now also names the exact Aerodrome v1 PoolFactory (`0x420DD381b31aEf6683db6B902084cB0FFECe40Da`).
+- **Aerodrome swap deep-links**: in `README.md` and `docs/FAQ.md` the `from=eth` parameter on `aerodrome.finance/swap?...` URLs was replaced with `from=0x8335…2913` (USDC contract address) to match the actual pool pair and avoid routing edge-cases.
+- **`docs/FAQ.md`**: the "Where can I buy ANI?" answer now explicitly states the pool is USDC-paired and adds a thin-liquidity warning linking to `STATUS.md`.
+
+### Changed
+
+- **`CONTRIBUTING.md` listings section** now tracks all four GitHub PRs opened to date with their numbers (Trust Wallet `#36846`, Uniswap default `#2496`, Sushiswap `#2370`, Cow Protocol `#1436`) and their current status, instead of only loosely mentioning Uniswap. Also added the Basescan token-info-update channel and an off-GitHub Aerodrome Discord entry.
+
+### Verified during this revision (block `46459216`, 2026-05-25 11:16:19 UTC)
+
+```
+totalSupply()                        99,973,348.5540 ANI
+balanceOf(burn vault)                78,973,348.5540 ANI
+balanceOf(Aerodrome pool)            20,000,000.0000 ANI
+balanceOf(deployer 0xDc1D..6412)        700,000.0000 ANI
+balanceOf(personal 0x4124..AF28)        300,000.0000 ANI
+                                     ---------------
+sum                                  99,973,348.5540 ANI  (matches totalSupply ✓)
+
+Pool reserves: USDC = 10.0000 (token0)  |  ANI = 20,000,000 (token1)
+Implied price: $0.0000005 per ANI
+Pool TVL:      ~$20 USD
+totalBurned:   26,651.4460 ANI
+pendingBurn:   11,185.9462 ANI (callable right now via triggerBurn())
+limitsFinalized: false
+```
+
 ## [1.2.0] – 2026-05-25
 
 ### Changed

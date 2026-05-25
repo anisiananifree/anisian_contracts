@@ -66,7 +66,7 @@ There is no admin, no pause, no withdraw, no upgrade.
 
 ### 3. Aerodrome liquidity pool
 
-A standard Aerodrome v2 pool (`vAMM-ANI/WETH` or similar). Not custom code. The token contract is informed of this pool's address via `initialize()` so it can apply the 90-day launch protection only to buys from this specific pool.
+A standard Aerodrome v1 volatile pool (`vAMM-ANI/USDC`, factory `0x420DD381b31aEf6683db6B902084cB0FFECe40Da`). Not custom code. The token contract is informed of this pool's address via `initialize()` so it can apply the 90-day launch protection only to buys from this specific pool.
 
 ## Trust model
 

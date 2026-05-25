@@ -2,6 +2,31 @@
 
 Small terminal utilities for reading on-chain state of the Anisian system. None of these scripts modify anything — they are read-only queries against a public Base RPC.
 
+## `get-live-state.py` ⭐
+
+Prints a **full snapshot** of the protocol: block number, total supply, balances for all known holders, pool reserves, implied ANI price, pool TVL, market cap, and burn vault progress. Use this to regenerate the numbers in [`../STATUS.md`](../STATUS.md) or to verify any claim in the README.
+
+### Usage
+
+```bash
+python3 ./get-live-state.py
+BASE_RPC=https://your-rpc python3 ./get-live-state.py
+```
+
+### Requirements
+
+- `python3` (stdlib only — no `pip install` needed)
+
+### What it reads
+
+| Source | Calls | Why |
+| --- | --- | --- |
+| Token contract `0xE378…7e5f` | `balanceOf(...)`, `totalSupply()`, `limitsFinalized()` | balances, supply, launch-protection flag |
+| Burn vault `0xAF72…416B` | `totalBurned()`, `pendingBurn()` | scheduled-burn progress |
+| Aerodrome pool `0x2F94…919bD` | `getReserves()` | USDC + ANI reserves → implied price + TVL |
+
+No private keys, no signing, no gas. Purely read-only.
+
 ## `check-burn-progress.sh`
 
 Prints the current state of the burn vault: vault balance, total burned, schedule target, and pending burn (the amount anyone can burn right now by calling `triggerBurn()`).

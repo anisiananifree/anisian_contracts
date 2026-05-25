@@ -68,7 +68,9 @@ No. Once `limitsFinalized` flips to `true` (automatically on the first transfer 
 
 ### Where can I buy ANI?
 
-Aerodrome on Base, via the registered liquidity pool [`0x2F947691C97244D845B2db2f86489D21c4c919bD`](https://basescan.org/address/0x2F947691C97244D845B2db2f86489D21c4c919bD). Direct link: [Buy on Aerodrome](https://aerodrome.finance/swap?from=eth&to=0xE378841a3970FD43ac8aD4D1D77b068C87287e5f).
+Aerodrome on Base, via the registered ANI/USDC volatile pool [`0x2F947691C97244D845B2db2f86489D21c4c919bD`](https://basescan.org/address/0x2F947691C97244D845B2db2f86489D21c4c919bD). The pool is paired with **native USDC on Base** (`0x8335…2913`), not WETH. Direct link: [Buy on Aerodrome](https://aerodrome.finance/swap?from=0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913&to=0xE378841a3970FD43ac8aD4D1D77b068C87287e5f).
+
+> **Important:** see [`STATUS.md`](../STATUS.md) for the current pool liquidity. At time of writing the pool is **very thin** — buys and sells will see large price impact until somebody adds more USDC-side liquidity. Trade responsibly.
 
 ### Why does my buy revert?
 

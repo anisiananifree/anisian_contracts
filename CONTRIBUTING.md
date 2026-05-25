@@ -27,16 +27,30 @@ If you pin it, drop the CID + your pinning service in an issue tagged `community
 
 ### 📝 Submit ANI to wallet directories
 
-These submissions only need to happen once each. If you have an account on these platforms, helping is straightforward:
+These submissions only need to happen once each. The current state of known submissions is tracked in [`STATUS.md`](./STATUS.md). If you have an account / can help on these platforms, here is the full list:
 
-- **[CoinGecko](https://www.coingecko.com/request-form/new-coin-form)** — listing form. Most wallets read from here.
-- **[CoinMarketCap](https://support.coinmarketcap.com/hc/en-us/articles/360043659351)** — listing form.
-- **[DexScreener](https://dexscreener.com/base/0x2F947691C97244D845B2db2f86489D21c4c919bD)** — click "Update info" on the pool page (once liquidity reaches their threshold).
+**Web forms (no GitHub account required):**
+
+- **[CoinGecko new-coin form](https://www.coingecko.com/request-form/new-coin-form)** — most wallets read from here for the logo.
+- **[CoinMarketCap listing request](https://support.coinmarketcap.com/hc/en-us/articles/360043659351)** — same idea, second largest source.
+- **[Basescan token info update](https://basescan.org/token/0xE378841a3970FD43ac8aD4D1D77b068C87287e5f)** — click "Update Token Info" on the token page.
+- **[DexScreener](https://dexscreener.com/base/0x2F947691C97244D845B2db2f86489D21c4c919bD)** — click "Update info" on the pool page (eligibility may depend on pool TVL).
 - **[GeckoTerminal](https://www.geckoterminal.com/base/pools/0x2F947691C97244D845B2db2f86489D21c4c919bD)** — pool info update.
-- **[Trust Wallet assets](https://github.com/trustwallet/assets)** — PR with logo + `info.json`. An existing PR is at [#36846](https://github.com/trustwallet/assets/pull/36846).
-- **[Uniswap default token list](https://github.com/Uniswap/default-token-list)** — long-shot but free to try.
 
-If you successfully list ANI somewhere, please open an issue with the link so we can update the `README.md`.
+**GitHub PRs (already opened by this repo's author, anyone may follow up / nudge maintainers):**
+
+| Target list | PR | Status |
+| --- | --- | --- |
+| [Trust Wallet assets](https://github.com/trustwallet/assets) | [#36846](https://github.com/trustwallet/assets/pull/36846) | open (paid review fee applies) |
+| [Uniswap default-token-list](https://github.com/Uniswap/default-token-list) | [#2496](https://github.com/Uniswap/default-token-list/pull/2496) | open (high bar; awaiting review) |
+| [Sushiswap list](https://github.com/sushiswap/list) | [#2370](https://github.com/sushiswap/list/pull/2370) | open |
+| [Cow Protocol token-lists](https://github.com/cowprotocol/token-lists) | [#1436](https://github.com/cowprotocol/token-lists/pull/1436) | open (CLA pending) |
+
+**Off-GitHub channels:**
+
+- **Aerodrome Discord** — request UI listing + logo + token whitelist for a gauge (see template in [`STATUS.md`](./STATUS.md)).
+
+If you successfully get ANI accepted somewhere, please open an issue with the link so [`STATUS.md`](./STATUS.md) and the `README.md` can be updated.
 
 ### 🤖 Run a `triggerBurn()` keeper
 

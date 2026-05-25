@@ -1,4 +1,10 @@
+<div align="center">
+
+<img src="https://raw.githubusercontent.com/anisiananifree/anisian_contracts/main/ipfs/ani-logo-256.png" alt="Anisian (ANI)" width="180" height="180" />
+
 # Anisian (ANI)
+
+</div>
 
 Fixed-supply, immutable ERC-20 token on Base with a deflationary halving burn schedule.
 
@@ -33,3 +39,16 @@ Solidity `0.8.24`, optimizer enabled (runs = 200), EVM `cancun`, `viaIR = false`
 ## License
 
 [MIT](./LICENSE).
+
+---
+
+<div align="center">
+
+[![Solidity](https://img.shields.io/badge/Solidity-0.8.24-363636?logo=solidity)](https://soliditylang.org/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![Network](https://img.shields.io/badge/Network-Base-0052FF?logo=coinbase&logoColor=white)](https://base.org)
+[![Verified on Basescan](https://img.shields.io/badge/Verified-Basescan-2E78A7)](https://basescan.org/token/0xE378841a3970FD43ac8aD4D1D77b068C87287e5f#code)
+[![Immutable](https://img.shields.io/badge/Contracts-Immutable-success)](#)
+[![No Admin](https://img.shields.io/badge/Admin-None-critical)](#)
+
+</div>

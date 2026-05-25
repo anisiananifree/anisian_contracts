@@ -1,0 +1,10 @@
+# Anisian is a community-owned, immutable token project with no foundation,
+# treasury, or maintainer salary. There is no fundraising goal and no person
+# to fund. If you want to support the project, the best ways are:
+#
+#   - Provide liquidity on Aerodrome (the pool address is in the README).
+#   - Run a triggerBurn() keeper bot (see CONTRIBUTING.md).
+#   - Pin the IPFS metadata (see CONTRIBUTING.md).
+#   - Translate documentation, submit ANI to wallet directories, mirror this repo.
+#
+# This file intentionally has no funding URLs configured.

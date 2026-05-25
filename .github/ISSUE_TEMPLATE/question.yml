@@ -1,0 +1,39 @@
+name: ❓ Question
+description: Ask a question about Anisian, the contracts, the burn schedule, or this repository.
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before asking, please skim the [FAQ](https://github.com/anisiananifree/anisian_contracts/blob/main/docs/FAQ.md) and the [architecture doc](https://github.com/anisiananifree/anisian_contracts/blob/main/docs/ARCHITECTURE.md) — your answer might already be there.
+
+  - type: dropdown
+    id: topic
+    attributes:
+      label: What is your question about?
+      options:
+        - How the burn schedule works
+        - How the launch protection (90-day buy limits) works
+        - Token supply distribution
+        - Adding ANI to a wallet
+        - Buying / selling on Aerodrome
+        - Contract verification on Basescan
+        - Submitting ANI to a wallet directory
+        - Repository / documentation
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Your question
+      description: Please be specific. If you reference a transaction or address, include the link to Basescan.
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: What you have already tried / read
+      description: Optional, but helps avoid duplicated answers.

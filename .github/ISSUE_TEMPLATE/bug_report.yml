@@ -1,0 +1,58 @@
+name: 🐛 Bug report
+description: Report incorrect documentation, broken links, or a contract behavior that contradicts the docs.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this. Remember: the **on-chain contracts are immutable** and cannot be patched. Reports about the contracts themselves are still useful for awareness, but they cannot be "fixed" in place — only documented or forked.
+
+        For documentation, metadata, scripts, or other repository content, fixes can be merged via PR.
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: What is affected?
+      options:
+        - Documentation (README, docs/, FAQ)
+        - Metadata (info.json, tokenlist.json, token-metadata.json)
+        - Logo or asset file
+        - Script (scripts/)
+        - On-chain contract behavior (cannot be patched, awareness only)
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is. Include the file path or contract address.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What did you expect to happen instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: |
+        If contract-related, include:
+        - The transaction hash on Basescan (if applicable)
+        - The function call and arguments
+        - The expected vs. actual output
+
+        If documentation, just point to the line / section.
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Anything else worth knowing (browser, wallet, network conditions, etc.).

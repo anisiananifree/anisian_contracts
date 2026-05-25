@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Read the FAQ first
+    url: https://github.com/anisiananifree/anisian_contracts/blob/main/docs/FAQ.md
+    about: Most common questions are answered here.
+  - name: View the contracts on Basescan
+    url: https://basescan.org/token/0xE378841a3970FD43ac8aD4D1D77b068C87287e5f
+    about: Source code is verified and publicly readable on-chain.
+  - name: Read the architecture document
+    url: https://github.com/anisiananifree/anisian_contracts/blob/main/docs/ARCHITECTURE.md
+    about: Full system overview, components, and trust model.

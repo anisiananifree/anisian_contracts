@@ -1,9 +1,45 @@
+<div align="center">
+
+<img src="https://raw.githubusercontent.com/anisiananifree/anisian_contracts/main/ipfs/ani-logo-256.png" alt="Anisian (ANI)" width="180" height="180" />
+
 # Anisian (ANI)
 
-Anisian is a **fixed-supply, immutable ERC-20 token on Base** with a deflationary halving burn schedule.
+**Fixed-supply, immutable ERC-20 token on Base with a deflationary halving burn schedule.**
+
+[![Solidity](https://img.shields.io/badge/Solidity-0.8.24-363636?logo=solidity)](https://soliditylang.org/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![Network](https://img.shields.io/badge/Network-Base-0052FF?logo=coinbase&logoColor=white)](https://base.org)
+[![Verified on Basescan](https://img.shields.io/badge/Verified-Basescan-2E78A7)](https://basescan.org/token/0xE378841a3970FD43ac8aD4D1D77b068C87287e5f#code)
+[![Immutable](https://img.shields.io/badge/Contracts-Immutable-success)](#project-status-community-owned-no-maintainer)
+[![No Admin](https://img.shields.io/badge/Admin-None-critical)](#project-status-community-owned-no-maintainer)
+[![Trading on Aerodrome](https://img.shields.io/badge/Trading-Aerodrome-1F89F1)](https://aerodrome.finance/swap?from=eth&to=0xE378841a3970FD43ac8aD4D1D77b068C87287e5f)
+
+[**Buy on Aerodrome**](https://aerodrome.finance/swap?from=eth&to=0xE378841a3970FD43ac8aD4D1D77b068C87287e5f) · [**View on Basescan**](https://basescan.org/token/0xE378841a3970FD43ac8aD4D1D77b068C87287e5f) · [**Token List**](./tokenlist.json) · [**FAQ**](./docs/FAQ.md)
+
+</div>
+
+---
+
+## Table of contents
+
+- [Overview](#overview)
+- [On-chain addresses](#on-chain-addresses-base-mainnet-chainid-8453)
+- [System architecture](#system-architecture)
+- [Supply distribution](#supply-distribution-100000000-ani-total)
+- [Project status: community-owned, no maintainer](#project-status-community-owned-no-maintainer)
+- [Add ANI to your wallet](#add-ani-to-your-wallet)
+- [Repository layout](#repository-layout)
+- [Contract summary](#contract-summary)
+- [Build / verify](#build--verify)
+- [Documentation](#documentation)
+- [License](#license)
+
+---
+
+## Overview
 
 - **100,000,000 ANI** minted once at deployment.
-- **~79,000,000 ANI** will be burned over **~14 years** via a permissionless burn vault (`triggerBurn` callable by anyone).
+- **~79,000,000 ANI** scheduled to be burned over **~14 years** via a permissionless burn vault (`triggerBurn` callable by anyone).
 - **No admin, no mint, no pause, no upgrade proxy.** Once deployed, nobody — not even the deployer — can change the rules.
 
 > Wallets are recommended to fetch token information from this repository or the official explorer pages linked below.
@@ -23,16 +59,46 @@ Contracts are verified on Basescan — source code matches this repository exact
 
 ---
 
+## System architecture
+
+```mermaid
+flowchart TD
+    Deployer[Deployer wallet<br/>0x4124..AF28] -->|"deploys + mints 100M"| Token((Anisian Token<br/>0xE378..7e5f<br/><b>ERC-20 immutable</b>))
+    Deployer -->|"deploys"| Vault((Burn Vault<br/>0xAF72..416B<br/><b>no admin</b>))
+    Deployer -->|"creates LP"| Pool((Aerodrome Pool<br/>0x2F94..919bD))
+
+    Token -. "79M transferred at init" .-> Vault
+    Token -. "initial liquidity" .-> Pool
+    Token -. "LP incentives / project" .-> Owner[Owner wallet<br/>1M ANI]
+
+    Vault ==>|"triggerBurn() permissionless<br/>halving schedule, 730d epochs"| Burned((🔥 Burned forever))
+
+    Pool <==>|"trading"| Public((Public traders))
+
+    classDef immutable fill:#0052FF,stroke:#fff,color:#fff,font-weight:bold
+    classDef burn fill:#ff4444,stroke:#fff,color:#fff,font-weight:bold
+    classDef wallet fill:#2a2a2a,stroke:#888,color:#fff
+    class Token,Vault immutable
+    class Burned burn
+    class Deployer,Owner,Public wallet
+```
+
+See [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md) for a complete description of the system and trust model.
+
+---
+
 ## Supply distribution (100,000,000 ANI total)
 
 | Allocation | Amount | Held by |
 | --- | --- | --- |
-| Burn vault (halving schedule, ~14 years) | 79,000,000 ANI | `0xAF727167448374f73AE22e3d026D11965EDf416B` |
-| Initial liquidity (Aerodrome pool) | held in LP | `0x2F947691C97244D845B2db2f86489D21c4c919bD` |
-| LP incentives (Aerodrome liquidity providers) | 700,000 ANI | `0x412462Ff8E3A3cB96B0b2255114Bd85cC900AF28` |
-| Deployer / project | 300,000 ANI | `0x412462Ff8E3A3cB96B0b2255114Bd85cC900AF28` |
+| Burn vault (halving schedule, ~14 years) | 79,000,000 ANI | [`0xAF72..416B`](https://basescan.org/address/0xAF727167448374f73AE22e3d026D11965EDf416B) |
+| Initial liquidity (Aerodrome pool) | held in LP | [`0x2F94..919bD`](https://basescan.org/address/0x2F947691C97244D845B2db2f86489D21c4c919bD) |
+| LP incentives (Aerodrome liquidity providers) | 700,000 ANI | [`0x4124..AF28`](https://basescan.org/address/0x412462Ff8E3A3cB96B0b2255114Bd85cC900AF28) |
+| Deployer / project | 300,000 ANI | [`0x4124..AF28`](https://basescan.org/address/0x412462Ff8E3A3cB96B0b2255114Bd85cC900AF28) |
 
 The 700,000 ANI on the deployer wallet are earmarked to be distributed to **Aerodrome liquidity providers** as a one-time incentive for bootstrapping liquidity. Once distributed, the deployer wallet retains only the 300,000 ANI personal allocation. All balances are publicly verifiable on Basescan.
+
+See [`docs/BURN_SCHEDULE.md`](./docs/BURN_SCHEDULE.md) for the full per-epoch burn allocation table.
 
 ---
 
@@ -44,7 +110,7 @@ Anisian is **immutable by design**:
 - The burn vault has **no admin** and `triggerBurn()` is **permissionless** — anyone may call it on schedule.
 - This repository is published as a public reference. There is no required maintainer; the protocol runs without one.
 
-This repo, the logos, and the metadata are released for the community to use, mirror, pin, fork, and submit to any wallet directory without permission.
+This repo, the logos, and the metadata are released for the community to **use, mirror, pin, fork, and submit to any wallet directory without permission**. See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for ideas.
 
 ---
 
@@ -75,17 +141,31 @@ https://raw.githubusercontent.com/anisiananifree/anisian_contracts/main/tokenlis
 │   ├── Anisian.sol              # ERC-20 token (100M fixed supply, launch protection)
 │   ├── AnisianBurnVault.sol     # Halving burn schedule, permissionless triggerBurn
 │   └── interfaces/IAnisian.sol
+├── docs/
+│   ├── ARCHITECTURE.md          # System overview, components, trust model
+│   ├── BURN_SCHEDULE.md         # Per-epoch burn allocation table
+│   └── FAQ.md                   # Common questions
 ├── ipfs/
-│   ├── ani-logo-128.png
-│   ├── ani-logo-256.png
-│   ├── ani-logo-512.png
+│   ├── ani-logo-{128,256,512}.png
 │   ├── ani-logo-512-white-bg.png
-│   └── token-metadata.json      # ERC-721/ERC-20 style metadata (also pinned on IPFS)
-├── tokenlist.json               # Uniswap Token List
-├── info.json                    # Short project descriptor
+│   └── token-metadata.json      # ERC-20 metadata (also pinned on IPFS)
+├── scripts/
+│   ├── README.md
+│   └── check-burn-progress.sh   # Query current burn vault state via Base RPC
+├── .github/
+│   ├── ISSUE_TEMPLATE/
+│   ├── PULL_REQUEST_TEMPLATE.md
+│   └── FUNDING.yml
+├── tokenlist.json               # Uniswap Token List (importable URL)
+├── info.json                    # Short project descriptor (Trust Wallet schema)
 ├── deploy-addresses.txt         # Deployed addresses
-├── .remix/settings.json         # Solidity 0.8.24, optimizer runs=200, evm=cancun, viaIR=false
-├── LICENSE
+├── .remix/settings.json         # Compiler config (0.8.24, runs=200, evm=cancun, viaIR=false)
+├── .editorconfig
+├── .gitignore
+├── CHANGELOG.md
+├── CONTRIBUTING.md
+├── SECURITY.md
+├── LICENSE                      # MIT
 └── README.md
 ```
 
@@ -135,10 +215,25 @@ The contracts compile in [Remix](https://remix.ethereum.org) with the settings i
 
 The verified source on Basescan matches the files in `contracts/` byte-for-byte.
 
+To check the current burn progress from your terminal:
+
+```bash
+./scripts/check-burn-progress.sh
+```
+
+---
+
+## Documentation
+
+- [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md) — system architecture, components, and trust model.
+- [`docs/BURN_SCHEDULE.md`](./docs/BURN_SCHEDULE.md) — per-epoch burn schedule and math.
+- [`docs/FAQ.md`](./docs/FAQ.md) — common questions about ANI.
+- [`SECURITY.md`](./SECURITY.md) — security model and disclosure policy.
+- [`CONTRIBUTING.md`](./CONTRIBUTING.md) — how the community can help.
+- [`CHANGELOG.md`](./CHANGELOG.md) — versioned project history.
+
 ---
 
 ## License
 
-[MIT](./LICENSE) — see file.
-
-The contracts themselves carry an `SPDX-License-Identifier: MIT` header.
+[MIT](./LICENSE) — see file. The contracts themselves carry an `SPDX-License-Identifier: MIT` header.

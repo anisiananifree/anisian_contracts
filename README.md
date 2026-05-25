@@ -62,7 +62,7 @@ Most wallets (MetaMask, Rabby, Coinbase Wallet, Trust Wallet, …) can add ANI b
 Wallets and DEX UIs that support the [Uniswap Token List](https://tokenlists.org) standard can import this list directly:
 
 ```
-https://raw.githubusercontent.com/anisian/anisian_contracts/main/tokenlist.json
+https://raw.githubusercontent.com/anisiananifree/anisian_contracts/main/tokenlist.json
 ```
 
 ---

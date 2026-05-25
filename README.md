@@ -16,10 +16,35 @@ Anisian is a **fixed-supply, immutable ERC-20 token on Base** with a deflationar
 | --- | --- |
 | ANI token | [`0xE378841a3970FD43ac8aD4D1D77b068C87287e5f`](https://basescan.org/token/0xE378841a3970FD43ac8aD4D1D77b068C87287e5f) |
 | Burn vault | [`0xAF727167448374f73AE22e3d026D11965EDf416B`](https://basescan.org/address/0xAF727167448374f73AE22e3d026D11965EDf416B) |
-| Liquidity pool | [`0x2f947691c97244d845b2db2f86489d21c4c919bd`](https://basescan.org/address/0x2f947691c97244d845b2db2f86489d21c4c919bd) |
+| Liquidity pool | [`0x2F947691C97244D845B2db2f86489D21c4c919bD`](https://basescan.org/address/0x2F947691C97244D845B2db2f86489D21c4c919bD) |
 | Owner wallet (limit-exempt) | [`0x412462Ff8E3A3cB96B0b2255114Bd85cC900AF28`](https://basescan.org/address/0x412462Ff8E3A3cB96B0b2255114Bd85cC900AF28) |
 
 Contracts are verified on Basescan — source code matches this repository exactly.
+
+---
+
+## Supply distribution (100,000,000 ANI total)
+
+| Allocation | Amount | Held by |
+| --- | --- | --- |
+| Burn vault (halving schedule, ~14 years) | 79,000,000 ANI | `0xAF727167448374f73AE22e3d026D11965EDf416B` |
+| Initial liquidity (Aerodrome pool) | held in LP | `0x2F947691C97244D845B2db2f86489D21c4c919bD` |
+| LP incentives (Aerodrome liquidity providers) | 700,000 ANI | `0x412462Ff8E3A3cB96B0b2255114Bd85cC900AF28` |
+| Deployer / project | 300,000 ANI | `0x412462Ff8E3A3cB96B0b2255114Bd85cC900AF28` |
+
+The 700,000 ANI on the deployer wallet are earmarked to be distributed to **Aerodrome liquidity providers** as a one-time incentive for bootstrapping liquidity. Once distributed, the deployer wallet retains only the 300,000 ANI personal allocation. All balances are publicly verifiable on Basescan.
+
+---
+
+## Project status: community-owned, no maintainer
+
+Anisian is **immutable by design**:
+
+- The token contract has **no owner, no admin, no mint, no pause, no upgrade**. Nothing in the protocol can be changed by anyone — including the deployer.
+- The burn vault has **no admin** and `triggerBurn()` is **permissionless** — anyone may call it on schedule.
+- This repository is published as a public reference. There is no required maintainer; the protocol runs without one.
+
+This repo, the logos, and the metadata are released for the community to use, mirror, pin, fork, and submit to any wallet directory without permission.
 
 ---
 

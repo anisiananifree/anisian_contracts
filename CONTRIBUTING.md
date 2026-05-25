@@ -13,17 +13,28 @@ The README, FAQ, and other docs are written in English. Translating to your lang
 3. Link to it from the main `README.md` (we keep a `Translations` row near the top).
 4. Open a pull request.
 
-### 📌 Pin the metadata on IPFS
+### 📌 Pin the assets on IPFS
 
-The token logos and `token-metadata.json` are content-addressed on IPFS (CID `bafkreigausrrafbfp4g7jtze7hryusey7jbfhkv4fngcucwesxtbndczjy`). The more independent pinners host this content, the more resilient the project is.
+The files under `ipfs/` are content-addressable. Each has its own CIDv1 (raw codec, sha256), independently computable from the file bytes. The more independent pinners host these, the more resilient the project is. **The project's canonical "primary logo" referenced from `tokenlist.json` and `ipfs/token-metadata.json` is `ani-logo-512.png`** (the 512×512 PNG), whose CID is `bafkreigausrrafbfp4g7jtze7hryusey7jbfhkv4fngcucwesxtbndczjy`.
+
+Full CID table (computed at the last commit; reproducible via `sha256sum` + CIDv1-raw):
+
+| File | Size | CIDv1-raw (`bafkrei…`) |
+| --- | ---: | --- |
+| `ipfs/ani-logo-128.png` | 23,135 B | `bafkreifiunoxepyhnuicnsi4kr4y367bzjuk4d26mwdb5hmyvzg5cftfvy` |
+| `ipfs/ani-logo-256.png` | 67,695 B | `bafkreiem2g2spi5u47z2drc3r2qqw4rt4nwb4ndkmj62kz3r7c6yf7y5wy` |
+| `ipfs/ani-logo-512.png` | 193,153 B | `bafkreigausrrafbfp4g7jtze7hryusey7jbfhkv4fngcucwesxtbndczjy` ⭐ canonical |
+| `ipfs/ani-logo-512-white-bg.png` | 163,934 B | `bafkreifrv2c4crz6quk3ckiuvod3pi6jma6nqhlxhzt2oohvvc452ryiku` |
+| `ipfs/token-metadata.json` | 778 B | `bafkreidg33i7ndyzjhwvbfwfeiriqectkxqii3eiiymvwqvb5c6ggcupo4` |
 
 Free / cheap pinning services:
+
 - [Pinata](https://www.pinata.cloud) — free tier
 - [web3.storage](https://web3.storage) — free tier, Filecoin redundancy
 - [Filebase](https://filebase.com) — S3-compatible IPFS, free tier
-- Run your own [IPFS Kubo](https://docs.ipfs.tech/install/) node and `ipfs pin add` the CID.
+- Run your own [IPFS Kubo](https://docs.ipfs.tech/install/) node and `ipfs pin add <cid>` each CID.
 
-If you pin it, drop the CID + your pinning service in an issue tagged `community-pin` so others can see how the redundancy graph looks.
+If you pin them, drop the CID(s) + your pinning service in an issue tagged `community-pin` so others can see how the redundancy graph looks.
 
 ### 📝 Submit ANI to wallet directories
 

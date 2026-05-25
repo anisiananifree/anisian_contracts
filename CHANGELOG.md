@@ -4,6 +4,63 @@ All notable changes to this repository are documented here. The on-chain contrac
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) for the repository structure (not the contracts, which have no version after deployment).
 
+## [1.4.0] – 2026-05-25
+
+### Fixed
+
+- **`scripts/get-live-state.py` function selectors** were silently incorrect for `limitsFinalized()`, `protectionEndsAt()`, and `liquidityCreatedAt()` — they hit no function on-chain and the RPC returned `0x0` (which happened to coincide with the truthy answer for `limitsFinalized` at this moment, masking the bug). Recomputed via `keccak256(signature)[:4]` using `pycryptodome`:
+  - `limitsFinalized()`      → `0xbc023556` (was `0x99fa6dec`)
+  - `protectionEndsAt()`     → `0xa929442c` (was `0xafb29ba0`)
+  - `liquidityCreatedAt()`   → `0x43185304` (newly added; not previously queried)
+  The script now also prints `liquidityCreatedAt` and `protectionEndsAt` alongside `limitsFinalized` so the full launch-protection state is visible at a glance. Verified the new selectors return the values matching the docs' on-chain claims.
+- **`CHANGELOG.md` on-chain history** claim ("First *community* `triggerBurn()` call(s) executed") corrected to reflect ground truth: both burns to date were called by the **deployer wallet** `0xDc1Dbe909Eb6E9bd054e123747ca77A036F16412` — `triggerBurn()` is permissionless so this carries no special access semantics, but labelling it "community" was misleading.
+- **`README.md` supply-distribution narrative**: the line *"After distribution, the deployer wallet's balance goes to zero"* was reworded to *"If and when those are distributed, the deployer wallet's balance goes to zero"*, plus an explicit note that the 700K is informally earmarked and not contract-bound. The deployer's earmark is a stated intention, not a smart-contract obligation.
+- **`CONTRIBUTING.md` "Pin the metadata on IPFS"** previously claimed a single CID covered "the token logos and `token-metadata.json`". A single CIDv1-raw covers exactly one file's bytes. The section now lists the individual CID for each of the five files under `ipfs/` (four PNGs + the JSON), with sizes and an explicit ⭐ marker on `ani-logo-512.png` (the canonical project logo referenced from `tokenlist.json` and `ipfs/token-metadata.json`).
+- **`STATUS.md` refresh instructions** previously contained `# pool reserves: see scripts/get-live-state.py` as a shell comment instead of an actual command. Replaced with the runnable `python3 scripts/get-live-state.py`. Also clarified that the in-file snapshot values are pinned to a specific block height and not auto-refreshed.
+
+### Added
+
+- **`STATUS.md` on-chain history table** for `triggerBurn()` calls, populated from the actual `Burned(uint256,uint256,address)` event topic `0x851e3b0d709635c31490f023f3cf3d419f0f8abd8adc8b2155e1aa08b3f70ff5` on the vault. Currently lists both burns with their tx hashes and timestamps. Total `26,651.445967` ANI burned — matches `totalBurned()` view exactly.
+
+### Verified (block `46459587`, 2026-05-25 11:28:41 UTC, all calls cross-checked with newly-verified selectors)
+
+```
+name()                = "Anisian"
+symbol()              = "ANI"
+decimals()            = 18
+INITIAL_SUPPLY()      = 100,000,000.000000 ANI
+totalSupply()         =  99,973,348.554033 ANI
+PROTECTION_WINDOW()   = 7,776,000 sec (=  90 days)
+BUY_COOLDOWN()        =       600 sec (=  10 min)
+MAX_BUY_AMOUNT()      =      10,000 ANI
+MAX_WALLET_AMOUNT()   =      20,000 ANI
+burnVault()           = 0xAF727167448374f73AE22e3d026D11965EDf416B   (cross-ref ✓)
+isLiquidityPool[POOL] = true
+isLimitExempt[VAULT]  = true
+isLimitExempt[PERS]   = true
+isLimitExempt[DEPL]   = false
+isLimitExempt[POOL]   = false
+liquidityCreatedAt()  = 1779661801   (2026-05-24 22:30:01 UTC)
+protectionEndsAt()    = 1787437801   (2026-08-22 22:30:01 UTC)
+limitsFinalized()     = false
+
+VAULT.token()         = 0xE378841a3970FD43ac8aD4D1D77b068C87287e5f   (cross-ref ✓)
+VAULT.startTime()     = 1779648119   (2026-05-24 18:41:59 UTC)
+TOTAL_BURN_BUDGET()   = 79,000,000 ANI
+HALVING_PERIOD()      = 63,072,000 sec (= 730 days)
+totalBurned()         =     26,651.445967 ANI
+vaultBalance()        = 78,973,348.554033 ANI
+isFunded()            = true
+
+POOL.factory()        = 0x420DD381b31aEf6683db6B902084cB0FFECe40Da  (Aerodrome v1 PoolFactory)
+POOL.token0()         = 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913  (USDC native, 6 dec)
+POOL.token1()         = 0xE378841a3970FD43ac8aD4D1D77b068C87287e5f  (ANI, 18 dec)
+POOL.getReserves()    = (10.0000 USDC, 20,000,000.0000 ANI)
+POOL.stable()         = 0 (false; volatile pool)
+```
+
+Sanity check: `balanceOf(vault)+balanceOf(pool)+balanceOf(deployer)+balanceOf(personal) = totalSupply()` to 6 decimals.
+
 ## [1.3.0] – 2026-05-25
 
 ### Added
@@ -138,7 +195,8 @@ These are the underlying chain events, not repository commits. Timestamps are re
 - **2026-05-24** — 79,000,000 ANI transferred from deployer to burn vault, funding the schedule. `isFunded()` returns true.
 - **2026-05-24** — 300,000 ANI transferred from deployer (`0xDc1D..6412`) to personal wallet (`0x4124..AF28`). Deployer wallet retains 700,000 ANI earmarked for LP incentives.
 - **2026-05-24** — Contracts verified on Basescan (source matches this repository byte-for-byte).
-- **2026-05-2X** — First community `triggerBurn()` call(s) executed; 26,651.45 ANI burned from vault (verifiable: vault `totalBurned()` view).
+- **2026-05-24 23:10:19 UTC** — First `triggerBurn()` executed by deployer `0xDc1D…6412` (tx [`0x848d…2473`](https://basescan.org/tx/0x848d82b1d4f58bca8a01232a6f1c41c6a961050f520e725b7c694c4c1f1a2473)). 10,210.553019 ANI burned.
+- **2026-05-25 06:22:23 UTC** — Second `triggerBurn()` executed by deployer (tx [`0x0197…09bb`](https://basescan.org/tx/0x019716837af1642c988600c8f2ed2e0cd11ea2c1aa4bd47b57f50bf5352609bb)). 16,440.892948 ANI burned. Cumulative `totalBurned()` = 26,651.445967 ANI.
 - **2026-08-22 22:30:01 UTC** (unix `1787437801`) — *(future)* launch protection limits permanently disable on the next transfer.
 
 > Exact block numbers and per-transaction details are available on Basescan via the addresses linked in [`README.md`](./README.md). Live state can be queried any time via `scripts/check-burn-progress.sh`.

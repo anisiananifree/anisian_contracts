@@ -29,9 +29,16 @@
 
 ### Burn vault progress
 
-- Total burned to date: **26,651.4460 ANI**
-- Pending burn (callable right now via `triggerBurn()`): **11,185.9462 ANI**
+- Total burned to date (cumulative across all `triggerBurn()` calls): **26,651.4460 ANI**
+- Pending burn at snapshot time (the schedule accrues a few hundred more ANI per hour, so this number grows continuously between burns): **11,185.9462 ANI**
 - Anyone can call `triggerBurn()` on the vault to execute the pending amount. Cost: gas only (~$0.01 on Base).
+
+**`triggerBurn()` calls so far** (all callable by anyone — these were the deployer wallet calling its own permissionless function, no special access):
+
+| # | When (UTC) | Amount burned | Called by | Tx |
+| :---: | --- | ---: | --- | --- |
+| 1 | 2026-05-24 23:10:19 | 10,210.553019 ANI | deployer `0xDc1D…6412` | [`0x848d…2473`](https://basescan.org/tx/0x848d82b1d4f58bca8a01232a6f1c41c6a961050f520e725b7c694c4c1f1a2473) |
+| 2 | 2026-05-25 06:22:23 | 16,440.892948 ANI | deployer `0xDc1D…6412` | [`0x0197…09bb`](https://basescan.org/tx/0x019716837af1642c988600c8f2ed2e0cd11ea2c1aa4bd47b57f50bf5352609bb) |
 
 ### Liquidity pool reality (this is the part nobody talks about)
 
@@ -159,11 +166,15 @@ Nothing about stewardship requires permission. The token is immutable; the off-c
 
 ## How to refresh this snapshot
 
-The on-chain state moves; this file does not auto-update. To regenerate the live numbers:
+The on-chain state moves; this file does **not** auto-update. The numbers above are pinned to **block `46459216` (2026-05-25 11:16:19 UTC)** and the on-chain history table is appended whenever new burns happen.
+
+To regenerate the live numbers yourself:
 
 ```bash
-./scripts/check-burn-progress.sh                  # vault state
-# pool reserves: see scripts/get-live-state.py    (or read via Basescan directly)
+python3 scripts/get-live-state.py        # full snapshot: balances, pool reserves, prices, vault state
+./scripts/check-burn-progress.sh         # focused view of the burn vault only
 ```
 
-If you spot a discrepancy between this file and the current on-chain state, open a PR with the corrected numbers and the block height you read at.
+Both scripts are read-only (no gas, no signing) and use the public Base RPC by default. To find new `triggerBurn()` events, query the `Burned(uint256,uint256,address)` event topic `0x851e3b0d709635c31490f023f3cf3d419f0f8abd8adc8b2155e1aa08b3f70ff5` on the vault address.
+
+If you spot a discrepancy between this file and the current on-chain state, open a PR with the corrected numbers and the block height you read them at.

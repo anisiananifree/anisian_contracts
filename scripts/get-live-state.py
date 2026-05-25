@@ -33,7 +33,9 @@ POOL      = "0x2F947691C97244D845B2db2f86489D21c4c919bD"
 DEPLOYER  = "0xDc1Dbe909Eb6E9bd054e123747ca77A036F16412"
 PERSONAL  = "0x412462Ff8E3A3cB96B0b2255114Bd85cC900AF28"
 
-# Function selectors (first 4 bytes of keccak256 of the signature)
+# Function selectors (first 4 bytes of keccak256 of the signature).
+# Verified by computing keccak256(sig)[:8] via pycryptodome and cross-checking
+# the returned values against the contract sources in ../contracts/.
 SEL = {
     "balanceOf":         "0x70a08231",  # balanceOf(address)
     "totalSupply":       "0x18160ddd",  # totalSupply()
@@ -41,8 +43,9 @@ SEL = {
     "pendingBurn":       "0x371f530a",  # pendingBurn()
     "vaultBalance":      "0x0bf6cc08",  # vaultBalance()
     "getReserves":       "0x0902f1ac",  # getReserves()
-    "limitsFinalized":   "0x99fa6dec",  # limitsFinalized()
-    "protectionEndsAt":  "0xafb29ba0",  # protectionEndsAt()  may differ; not used here
+    "limitsFinalized":   "0xbc023556",  # limitsFinalized()
+    "protectionEndsAt":  "0xa929442c",  # protectionEndsAt()
+    "liquidityCreatedAt":"0x43185304",  # liquidityCreatedAt()
 }
 
 
@@ -88,6 +91,8 @@ def main():
     time.sleep(0.3); burned     = ani(eth_call(VAULT, SEL["totalBurned"]))
     time.sleep(0.3); pending    = ani(eth_call(VAULT, SEL["pendingBurn"]))
     time.sleep(0.3); lf_raw     = eth_call(TOKEN, SEL["limitsFinalized"])
+    time.sleep(0.3); lca        = to_int(eth_call(TOKEN, SEL["liquidityCreatedAt"]))
+    time.sleep(0.3); pea        = to_int(eth_call(TOKEN, SEL["protectionEndsAt"]))
     time.sleep(0.3)
 
     raw = eth_call(POOL, SEL["getReserves"])[2:]
@@ -129,6 +134,10 @@ def main():
     print()
     print("  Launch protection")
     print("  -----------------")
+    lca_h = datetime.fromtimestamp(lca, tz=timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC") if lca else "n/a"
+    pea_h = datetime.fromtimestamp(pea, tz=timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC") if pea else "n/a"
+    print(f"    liquidityCreatedAt  {lca}    ({lca_h})")
+    print(f"    protectionEndsAt    {pea}    ({pea_h})")
     print(f"    limitsFinalized()   {bool(to_int(lf_raw))}    (when True, 90-day buy limits are permanently off)")
     print()
     print("  Sanity check")

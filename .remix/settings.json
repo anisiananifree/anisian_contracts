@@ -1,0 +1,14 @@
+{
+  "solidity-compiler": {
+    "language": "Solidity",
+    "settings": {
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "evmVersion": "cancun",
+      "viaIR": false
+    }
+  },
+  "solidity": "0.8.24"
+}

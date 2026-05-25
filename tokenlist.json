@@ -1,0 +1,44 @@
+{
+  "name": "Anisian Token List",
+  "timestamp": "2026-05-25T00:00:00.000Z",
+  "version": {
+    "major": 1,
+    "minor": 0,
+    "patch": 0
+  },
+  "keywords": [
+    "anisian",
+    "ani",
+    "base",
+    "deflationary",
+    "burn",
+    "erc20"
+  ],
+  "tags": {
+    "deflationary": {
+      "name": "Deflationary",
+      "description": "Token with a scheduled burn mechanism that reduces total supply over time."
+    },
+    "immutable": {
+      "name": "Immutable",
+      "description": "Contract has no admin, no mint, no pause, no proxy upgrade path."
+    }
+  },
+  "logoURI": "ipfs://bafkreigausrrafbfp4g7jtze7hryusey7jbfhkv4fngcucwesxtbndczjy",
+  "tokens": [
+    {
+      "chainId": 8453,
+      "address": "0xE378841a3970FD43ac8aD4D1D77b068C87287e5f",
+      "name": "Anisian",
+      "symbol": "ANI",
+      "decimals": 18,
+      "logoURI": "ipfs://bafkreigausrrafbfp4g7jtze7hryusey7jbfhkv4fngcucwesxtbndczjy",
+      "tags": ["deflationary", "immutable"],
+      "extensions": {
+        "burnVault": "0xAF727167448374f73AE22e3d026D11965EDf416B",
+        "liquidityPool": "0x2f947691c97244d845b2db2f86489d21c4c919bd",
+        "explorer": "https://basescan.org/token/0xE378841a3970FD43ac8aD4D1D77b068C87287e5f"
+      }
+    }
+  ]
+}

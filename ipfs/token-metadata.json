@@ -1,0 +1,15 @@
+{
+  "name": "Anisian",
+  "symbol": "ANI",
+  "decimals": 18,
+  "description": "Anisian (ANI) is a fixed-supply, immutable ERC-20 token on Base with a deflationary halving burn schedule. 100,000,000 ANI minted once at deployment; ~79,000,000 will be burned over ~14 years via a permissionless burn vault. No admin, no mint, no pause, no upgrade.",
+  "image": "ipfs://bafkreigausrrafbfp4g7jtze7hryusey7jbfhkv4fngcucwesxtbndczjy",
+  "chainId": 8453,
+  "chain": "Base",
+  "contract": "0xE378841a3970FD43ac8aD4D1D77b068C87287e5f",
+  "burn_vault": "0xAF727167448374f73AE22e3d026D11965EDf416B",
+  "liquidity_pool": "0x2f947691c97244d845b2db2f86489d21c4c919bd",
+  "explorer": "https://basescan.org/token/0xE378841a3970FD43ac8aD4D1D77b068C87287e5f",
+  "website": "",
+  "whitepaper": ""
+}

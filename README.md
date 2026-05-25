@@ -43,8 +43,8 @@
 - **No admin, no mint, no pause, no upgrade proxy.** Once deployed, nobody — not even the deployer — can change the rules.
 
 > Wallets are recommended to fetch token information from this repository or the official explorer pages linked below.
-
-> **⚠️ Read [`STATUS.md`](./STATUS.md) before trading or integrating.** The pool currently holds a very small amount of USDC-side liquidity; the project is **community-owned with no committed maintainer**. [`STATUS.md`](./STATUS.md) is the honest source of truth for the project's current on-chain state, what listings are done, what is blocked, and how someone can help (with time, capital, or stewardship).
+>
+> For the current on-chain snapshot (balances, pool reserves, burn history, listings status) see [`STATUS.md`](./STATUS.md).
 
 ---
 
@@ -109,9 +109,7 @@ See [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md) for a complete description 
 | Personal (limit-exempt wallet) | 300,000 ANI | [`0x4124..AF28`](https://basescan.org/address/0x412462Ff8E3A3cB96B0b2255114Bd85cC900AF28) |
 | **Total** | **100,000,000 ANI** | (matches `INITIAL_SUPPLY`) |
 
-The **700,000 ANI** sitting on the deployer wallet `0xDc1D..6412` are *informally* earmarked to be distributed to **Aerodrome liquidity providers** as a one-time bootstrapping incentive. The exact mechanism (gauge bribes, merkle airdrop, direct disperse) and whether this distribution happens at all is not bound by any smart contract — it is dependent on the deployer choosing to send the tokens. As of the latest snapshot in [`STATUS.md`](./STATUS.md), the 700,000 ANI are still held on `0xDc1D..6412` and have not been distributed. *If and when* they are distributed, the deployer wallet's balance goes to zero.
-
-The **300,000 ANI** on the personal wallet `0x4124..AF28` are the founder's allocation. This wallet was registered as `ownerWallet` in `initialize()` and is therefore `isLimitExempt = true` on-chain — the 90-day launch protection limits do not apply to it. All balances are publicly verifiable on Basescan, and the totals above can be cross-checked against `scripts/get-live-state.py` or any block explorer.
+The **700,000 ANI** on the deployer wallet `0xDc1D..6412` are an off-chain allocation; no smart-contract logic enforces what happens to them. The **300,000 ANI** on the personal wallet `0x4124..AF28` are the deployer's allocation; this wallet was registered as `ownerWallet` in `initialize()` and is therefore `isLimitExempt = true` on-chain (90-day launch protection limits do not apply to it). All balances are publicly verifiable on Basescan and via `scripts/get-live-state.py`.
 
 See [`docs/BURN_SCHEDULE.md`](./docs/BURN_SCHEDULE.md) for the full per-epoch burn allocation table.
 
@@ -181,7 +179,7 @@ https://raw.githubusercontent.com/anisiananifree/anisian_contracts/main/tokenlis
 ├── CHANGELOG.md
 ├── CONTRIBUTING.md
 ├── SECURITY.md
-├── STATUS.md                    # Live on-chain snapshot + listings + call for stewardship
+├── STATUS.md                    # On-chain snapshot + listings status
 ├── LICENSE                      # MIT
 └── README.md
 ```
@@ -242,7 +240,7 @@ To check the current burn progress from your terminal:
 
 ## Documentation
 
-- [`STATUS.md`](./STATUS.md) — **honest, live on-chain state** of the project (TVL, listings, blockers, call for stewardship).
+- [`STATUS.md`](./STATUS.md) — point-in-time on-chain snapshot, listings, burn history.
 - [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md) — system architecture, components, and trust model.
 - [`docs/BURN_SCHEDULE.md`](./docs/BURN_SCHEDULE.md) — per-epoch burn schedule and math.
 - [`docs/FAQ.md`](./docs/FAQ.md) — common questions about ANI.

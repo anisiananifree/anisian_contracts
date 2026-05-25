@@ -33,7 +33,7 @@ Because the contracts cannot be patched, "responsible disclosure" looks differen
 
 2. If you believe the disclosure could cause **acute, immediate, recoverable harm** (e.g., a previously-unknown exploit that drains an active liquidity pool), prefer **private notification first** to the deployer wallet's known channels (whichever are listed in the README at that time) so users can act before the issue becomes widely known.
 
-3. There is **no bug bounty**. The protocol has no treasury, no foundation, and no maintainer commitment to reward disclosures. Disclosure is purely a community service.
+3. There is **no bug bounty**. The protocol has no on-chain treasury and no off-chain foundation to pay out from; disclosure is a community service.
 
 ## Known properties (by design)
 

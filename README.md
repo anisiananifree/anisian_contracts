@@ -41,31 +41,6 @@ DEX UIs and wallets supporting the [Uniswap Token List](https://tokenlists.org) 
 https://raw.githubusercontent.com/anisiananifree/anisian_contracts/main/tokenlist.json
 ```
 
-## How it works
-
-### Architecture
-
-Anisian is a two-contract system on Base mainnet. Both contracts are immutable and verified on Basescan.
-
-```
-        ┌────────────────┐                       ┌────────────────────┐
-        │   Anisian.sol  │  burnFromVault()      │ AnisianBurnVault   │
-        │  (ANI ERC-20)  │ <───────────────────  │      .sol          │
-        │   100M supply  │                       │  holds 79M ANI     │
-        └───────┬────────┘                       └─────────┬──────────┘
-                │                                          │
-                │ pool of ANI/USDC                         │ triggerBurn()
-                ▼                                          │ (anyone)
-        ┌────────────────────────┐                         │
-        │  Aerodrome ANI/USDC    │                         │
-        │  vAMM pool             │                         │
-        │  (LP tokens burned)    │                         │
-        └────────────────────────┘                         │
-                                                           ▼
-                                                  ANI tokens burned
-                                                  (sent to 0xdead)
-```
-
 ### ANI token (`Anisian.sol`)
 
 A standard OpenZeppelin v5.2.0 ERC-20 with a one-time setup and a 90-day buy-side launch protection.
@@ -139,13 +114,12 @@ What is enforced **by code**, on-chain, with no off-chain assumptions:
 - The vault can only burn what is currently scheduled (`pendingBurn()`); it cannot burn faster than the math allows.
 - The vault has no owner and no withdrawal path. Its only outbound flow is the burn function.
 - The 90-day launch limits cannot be re-enabled once `limitsFinalized` flips to true.
-- The LP for the Aerodrome ANI/USDC pool was transferred to `0x000…dEaD` ([proof](https://basescan.org/tx/0x195bd10da146618cda04bd7a0cc58548a99d076f6c012586b25aaa5fe976ed4c)). The pool reserves (~10.35 USDC + ~20.7M ANI) cannot be withdrawn by anyone, including the deployer.
+- The LP for the Aerodrome ANI/USDC pool was transferred to `0x000…dEaD` ([proof](https://basescan.org/tx/0x195bd10da146618cda04bd7a0cc58548a99d076f6c012586b25aaa5fe976ed4c)).
 
 What is **not** enforced by this code:
 
 - Token price, market depth, or trading volume. Those depend on swappers and other LPs, not on the contracts.
 - The price you pay for ANI on Aerodrome at any moment. Slippage and price discovery happen in the AMM, not here.
-- The behaviour of the 300,000 ANI personal allocation on the `ownerWallet`. The owner can sell or transfer it; the contract only exempts that wallet from buy-limits.
 
 ## Build / verify
 

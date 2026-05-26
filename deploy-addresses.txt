@@ -8,8 +8,13 @@ VAULT=0xAF727167448374f73AE22e3d026D11965EDf416B
 POOL=0x2F947691C97244D845B2db2f86489D21c4c919bD
 
 # Wallets (publicly verifiable on Basescan)
-DEPLOYER=0xDc1Dbe909Eb6E9bd054e123747ca77A036F16412      # holds 700,000 ANI earmarked for Aerodrome LP incentives
+DEPLOYER=0xDc1Dbe909Eb6E9bd054e123747ca77A036F16412      # initial deployer; ANI balance now 0 (all 100M distributed); LP from this wallet was burned to 0x000...dEaD
 OWNER_WALLET=0x412462Ff8E3A3cB96B0b2255114Bd85cC900AF28  # registered as ownerWallet in initialize(); limit-exempt; holds 300,000 ANI personal allocation
+
+# --- Permanent liquidity lock ---
+LP_BURN_TX=0x195bd10da146618cda04bd7a0cc58548a99d076f6c012586b25aaa5fe976ed4c
+# 0.014637110370560533 LP transferred from DEPLOYER to 0x000000000000000000000000000000000000dEaD on 2026-05-26.
+# This permanently locks all pool reserves (~10.35 USDC + 20.7M ANI). No one, including the deployer, can ever withdraw.
 
 # --- Key on-chain timestamps (read from the contracts on Base) ---
 VAULT_START_TIME=1779648119          # 2026-05-24 18:41:59 UTC  (burn schedule clock starts here)

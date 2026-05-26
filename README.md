@@ -10,6 +10,7 @@
 [![Verified on Basescan](https://img.shields.io/badge/Verified-Basescan-2E78A7)](https://basescan.org/token/0xE378841a3970FD43ac8aD4D1D77b068C87287e5f#code)
 [![Immutable](https://img.shields.io/badge/Contracts-Immutable-success)](#)
 [![No Admin](https://img.shields.io/badge/Admin-None-critical)](#)
+[![Liquidity Locked](https://img.shields.io/badge/Liquidity-Locked%20forever-9333ea)](https://basescan.org/tx/0x195bd10da146618cda04bd7a0cc58548a99d076f6c012586b25aaa5fe976ed4c)
 
 </div>
 
@@ -17,6 +18,7 @@ Fixed-supply, immutable ERC-20 token on Base with a deflationary halving burn sc
 
 - **Supply:** 100,000,000 ANI (minted once at deployment).
 - **Burn:** 79,000,000 ANI scheduled to burn over ~14 years via a permissionless `triggerBurn()` on the burn vault.
+- **Liquidity:** initial seed (~10.35 USDC + 20.7M ANI) is permanently locked — LP tokens burned to `0x000…dEaD` ([tx](https://basescan.org/tx/0x195bd10da146618cda04bd7a0cc58548a99d076f6c012586b25aaa5fe976ed4c)). Nobody, including the deployer, can withdraw.
 - **Admin:** none. No owner, no mint, no pause, no upgrade.
 
 ## Addresses (Base, chainId 8453)

@@ -41,7 +41,7 @@ DEX UIs and wallets supporting the [Uniswap Token List](https://tokenlists.org) 
 https://raw.githubusercontent.com/anisiananifree/anisian_contracts/main/tokenlist.json
 ```
 
-### ANI token (`Anisian.sol`)
+### ANI token (`Anisian.sol`) https://anisian.org
 
 A standard OpenZeppelin v5.2.0 ERC-20 with a one-time setup and a 90-day buy-side launch protection.
 
